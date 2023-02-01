@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    class VehicleMakeEntity
+    public class VehicleMakeEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Abrv { get; set; }
-        public virtual ICollection<VehicleModelEntity> VehicleModels { get; set; }
+        public List<VehicleModelEntity> VehicleModels { get; set; }
     }
 }
