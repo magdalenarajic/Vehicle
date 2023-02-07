@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.Common
 {
@@ -7,6 +8,8 @@ namespace Model.Common
         int Id { get; set; }
         string Name { get; set; }
         string Abrv { get; set; }
-        List<IVehicleModel> VehicleModels { get; set; }
+
+
+        ICollection<IVehicleModel> VehicleModels { get; set; }
     }
 }
