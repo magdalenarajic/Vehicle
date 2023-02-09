@@ -14,7 +14,6 @@ namespace Model
         public string Name { get; set; }
         public string Abrv { get; set; }
 
-
-        public ICollection<IVehicleModel> VehicleModels { get; set; }
+        public virtual ICollection<VehicleModel> VehicleModels { get; set; }
     }
 }

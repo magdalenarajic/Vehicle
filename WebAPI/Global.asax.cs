@@ -1,9 +1,5 @@
 ﻿using DAL;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+using Model;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -15,11 +11,15 @@ namespace WebAPI
     {
         protected void Application_Start()
         {
-            Database.SetInitializer(new VehicleContextInitializer());
-
-            VehicleContext db = new VehicleContext();
-            db.Database.Initialize(true);
-
+           /* using (VehicleContext db = new VehicleContext())
+            {
+                db.VehicleMakes.Add(new VehicleMake
+                {
+                    Name = "Volkswagen",
+                    Abrv = "VW"
+                });
+                db.SaveChanges();
+            } */
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

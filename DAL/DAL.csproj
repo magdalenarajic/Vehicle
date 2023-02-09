@@ -51,12 +51,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\VehicleMakeEntity.cs" />
-    <Compile Include="Entities\VehicleModelEntity.cs" />
     <Compile Include="IVehicleContext.cs" />
+    <Compile Include="Migrations\202302091512088_InitialCreate.cs" />
+    <Compile Include="Migrations\202302091512088_InitialCreate.designer.cs">
+      <DependentUpon>202302091512088_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202302091632298_UpdateModel.cs" />
+    <Compile Include="Migrations\202302091632298_UpdateModel.designer.cs">
+      <DependentUpon>202302091632298_UpdateModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VehicleContext.cs" />
-    <Compile Include="VehicleContextInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -67,6 +73,14 @@
       <Project>{9B2A7168-AE14-472D-83F8-1A733D799FDD}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202302091512088_InitialCreate.resx">
+      <DependentUpon>202302091512088_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302091632298_UpdateModel.resx">
+      <DependentUpon>202302091632298_UpdateModel.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

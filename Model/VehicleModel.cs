@@ -1,4 +1,5 @@
 ﻿using Model.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model
 {
@@ -8,8 +9,9 @@ namespace Model
         public string Name { get; set; }
         public string Abrv { get; set; }
 
+        [ForeignKey("VehicleMake")]
         public int MakeId { get; set; }
-        public IVehicleMake VehicleMake { get; set; }
+        public VehicleMake VehicleMake { get; set; }
         
        
     }

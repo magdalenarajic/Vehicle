@@ -9,7 +9,5 @@ namespace Model.Common
         string Name { get; set; }
         string Abrv { get; set; }
 
-
-        ICollection<IVehicleModel> VehicleModels { get; set; }
     }
 }
