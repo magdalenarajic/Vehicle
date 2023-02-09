@@ -8,6 +8,8 @@ namespace Model.Common
         int Id { get; set; }
         string Name { get; set; }
         string Abrv { get; set; }
+
+        int MakeId { get; set; }
         IVehicleMake VehicleMake { get; set; }
     }
 }
