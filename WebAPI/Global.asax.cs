@@ -11,20 +11,8 @@ namespace WebAPI
     {
         protected void Application_Start()
         {
-           /* using (VehicleContext db = new VehicleContext())
-            {
-                db.VehicleMakes.Add(new VehicleMake
-                {
-                    Name = "Volkswagen",
-                    Abrv = "VW"
-                });
-                db.SaveChanges();
-            } */
-            AreaRegistration.RegisterAllAreas();
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
 
         }
     }
