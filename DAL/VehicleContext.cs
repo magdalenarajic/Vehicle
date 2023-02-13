@@ -1,6 +1,8 @@
 ﻿
+using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Threading.Tasks;
 using Model;
 
 namespace DAL
@@ -16,5 +18,7 @@ namespace DAL
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
+        
     }
 }

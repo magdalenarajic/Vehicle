@@ -11,7 +11,7 @@ namespace Model
 
         [ForeignKey("VehicleMake")]
         public int MakeId { get; set; }
-        public VehicleMake VehicleMake { get; set; }
+        public virtual VehicleMake VehicleMake { get; set; }
         
        
     }

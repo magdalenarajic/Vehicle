@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using WebAPI.App_Start;
 
 namespace WebAPI
 {
@@ -11,20 +12,17 @@ namespace WebAPI
     {
         protected void Application_Start()
         {
-           /* using (VehicleContext db = new VehicleContext())
-            {
-                db.VehicleMakes.Add(new VehicleMake
-                {
-                    Name = "Volkswagen",
-                    Abrv = "VW"
-                });
-                db.SaveChanges();
-            } */
             AreaRegistration.RegisterAllAreas();
+
+            Bootstrapper.Run();
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            
+            
 
         }
     }
