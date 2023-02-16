@@ -14,10 +14,15 @@ namespace WebAPI.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            
+            builder.RegisterModule(new RepositoryModuleDI());
             builder.RegisterType(typeof(VehicleContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
+            builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
 
         }
+
+    }
+
+
+}
     }
 }
