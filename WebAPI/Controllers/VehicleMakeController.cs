@@ -22,5 +22,9 @@ namespace WebAPI.Controllers
             {
             return await _vehicleMakeService.GetAllVehicleMakesAsync();
             }
+        public async Task<bool> AddVehicleMakeAsync(VehicleMake entity)
+        {
+            return await _vehicleMakeService.AddVehicleMakeAsync(entity);
+        }
     }
 }

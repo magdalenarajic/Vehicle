@@ -11,5 +11,6 @@ namespace Service.Common
     {
         Task<VehicleMake> GetVehicleMakeByIdAsync(Guid id);
         Task<IEnumerable<VehicleMake>> GetAllVehicleMakesAsync();
+        Task<bool> AddVehicleMakeAsync(VehicleMake entity);
     }
 }

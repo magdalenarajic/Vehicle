@@ -27,5 +27,9 @@ namespace Service
         {
             return await _unitOfWork.VehicleMakeRepository.GetAllAsync();
         }
+        public async Task<bool> AddVehicleMakeAsync(VehicleMake entity)
+        {
+             return await _unitOfWork.VehicleMakeRepository.Add(entity);
+        }
     }
 }
