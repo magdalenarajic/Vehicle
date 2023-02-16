@@ -18,9 +18,9 @@ namespace WebAPI.Controllers
         {
             _vehicleMakeService = vehicleMakeService;
         }
-        public async Task<IEnumerable<VehicleMake>> GetVehicleMakesAsync()
+        public async Task<IEnumerable<VehicleMake>> GetAllVehicleMakesAsync()
             {
-            return await _vehicleMakeService.GetAllVehicleMake();
+            return await _vehicleMakeService.GetAllVehicleMakesAsync();
             }
     }
 }

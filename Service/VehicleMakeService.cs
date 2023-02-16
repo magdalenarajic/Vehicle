@@ -23,7 +23,7 @@ namespace Service
             return await _unitOfWork.VehicleMakeRepository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<VehicleMake>> GetAllVehicleMake()
+        public async Task<IEnumerable<VehicleMake>> GetAllVehicleMakesAsync()
         {
             return await _unitOfWork.VehicleMakeRepository.GetAllAsync();
         }

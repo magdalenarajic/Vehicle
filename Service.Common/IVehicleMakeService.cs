@@ -10,6 +10,6 @@ namespace Service.Common
     public interface IVehicleMakeService
     {
         Task<VehicleMake> GetVehicleMakeByIdAsync(Guid id);
-        Task<IEnumerable<VehicleMake>> GetAllVehicleMake();
+        Task<IEnumerable<VehicleMake>> GetAllVehicleMakesAsync();
     }
 }

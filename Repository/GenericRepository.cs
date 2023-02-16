@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Repository
@@ -21,6 +19,8 @@ namespace Repository
             _dbContext = context;
             _dbSet = context.Set<T>();
         }
+
+
         public virtual IEnumerable<T> GetAll()
         {
             try
@@ -36,9 +36,16 @@ namespace Repository
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-           return await _dbSet.ToListAsync();
+            try
+            {
+                return await _dbSet.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Couldn't retrieve entities: {e.Message}");
+            }
         }
-        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression)
+        public virtual async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression)
         {
             try
             {
@@ -63,5 +70,13 @@ namespace Repository
             }
             
         }
+
+        public virtual async Task<bool> Add(T entity)
+        {
+             _dbSet.Add(entity);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
     }
 }
