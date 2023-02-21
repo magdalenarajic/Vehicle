@@ -11,7 +11,8 @@ namespace Repository.Common
         IVehicleMakeRepository VehicleMakeRepository { get; }
         IVehicleModelRepository VehicleModelRepository { get; }
         void Commit();
-        void Rollback();
+        void Dispose();
+        int Save();
         Task CommitAsync();
     }
 }

@@ -17,10 +17,7 @@ namespace Repository
         {
 
         }
-       /* public override IEnumerable<VehicleMake> GetAll()
-        {
-            return _dbContext.Set<VehicleMake>().AsEnumerable();
-        }*/
+      
 
     }
 }

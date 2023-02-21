@@ -10,21 +10,29 @@ using System.Web.Http;
 
 namespace WebAPI.Controllers
 {
+    [RoutePrefix("api/vehiclemake")]
     public class VehicleMakeController : ApiController
     {
         private readonly IVehicleMakeService _vehicleMakeService;
 
+        
         public VehicleMakeController(IVehicleMakeService vehicleMakeService)
         {
             _vehicleMakeService = vehicleMakeService;
         }
-        public async Task<IEnumerable<VehicleMake>> GetAllVehicleMakesAsync()
-            {
-            return await _vehicleMakeService.GetAllVehicleMakesAsync();
-            }
-        public async Task<bool> AddVehicleMakeAsync(VehicleMake entity)
+
+        // GET api/values
+        [HttpGet]
+        [Route("makes")]
+        public async Task<IEnumerable<VehicleMake>> GetAsync()
         {
-            return await _vehicleMakeService.AddVehicleMakeAsync(entity);
+            return await _vehicleMakeService.GetAllVehicleMakesAsync();
         }
+
+       
+
+
+
+
     }
 }

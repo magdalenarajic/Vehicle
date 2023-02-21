@@ -38,13 +38,17 @@ namespace Repository
         {
             _dbContext.SaveChanges();
         }
+        public int Save()
+        {
+            return _dbContext.SaveChanges();
+        }
 
         public async Task CommitAsync()
         {
             await _dbContext.SaveChangesAsync();
         }
 
-        public void Rollback()
+        public void Dispose()
         {
             _dbContext.Dispose();
         }

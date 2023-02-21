@@ -12,9 +12,11 @@ namespace Repository.Common
     public interface IGenericRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression);
-        Task<T> GetByIdAsync(Guid id);
-        Task<bool> Add(T entity);
+        Task<ICollection<T>> GetAllAsync();
+        Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> expression);
+        Task<T> GetByIdAsync(int id);
+        Task<T> AddAsync(T entity);
+        Task<int> DeleteAsync(T entity);
+        Task<T> UpdateAsync(T entity);
     }
 }

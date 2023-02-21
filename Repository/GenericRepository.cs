@@ -34,7 +34,7 @@ namespace Repository
             
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<ICollection<T>> GetAllAsync()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Repository
                 throw new Exception($"Couldn't retrieve entities: {e.Message}");
             }
         }
-        public virtual async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression)
+        public virtual async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> expression)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Repository
             
         }
 
-        public virtual async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             try
             {
@@ -71,12 +71,58 @@ namespace Repository
             
         }
 
-        public virtual async Task<bool> Add(T entity)
+        public  async Task<T> AddAsync(T entity)
         {
-             _dbSet.Add(entity);
-            await _dbContext.SaveChangesAsync();
-            return true;
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(AddAsync)} entity must not be null");
+            }
+            try
+            {
+                _dbSet.Add(entity);
+                await _dbContext.SaveChangesAsync();
+                return entity;
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"{nameof(entity)} could not be saved: {e.Message}");
+            }
+           
         }
 
+        public virtual async Task<T> UpdateAsync(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(UpdateAsync)} entity must not be null");
+            }
+            try
+            {
+                    _dbContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+                return entity;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"{nameof(entity)} could not be updated: {e.Message}");
+            }
+        }
+        public virtual async Task<int> DeleteAsync(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(DeleteAsync)} entity must not be null");
+            }
+            try
+            {
+                _dbSet.Remove(entity);
+               return await _dbContext.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"{nameof(entity)} could not be removed: {e.Message}");
+            }
+            
+        }
     }
 }

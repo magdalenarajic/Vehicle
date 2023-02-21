@@ -18,6 +18,7 @@ namespace WebAPI.Modules
             builder.RegisterType(typeof(VehicleContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
             builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
 
+            base.Load(builder);
         }
 
     }
