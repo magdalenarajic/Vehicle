@@ -118,14 +118,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\VehicleMakeEntity.cs" />
+    <Compile Include="Entities\VehicleModelEntity.cs" />
     <Compile Include="IVehicleContext.cs" />
-    <Compile Include="Migrations\202302091512088_InitialCreate.cs" />
-    <Compile Include="Migrations\202302091512088_InitialCreate.designer.cs">
-      <DependentUpon>202302091512088_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202302091632298_UpdateModel.cs" />
-    <Compile Include="Migrations\202302091632298_UpdateModel.designer.cs">
-      <DependentUpon>202302091632298_UpdateModel.cs</DependentUpon>
+    <Compile Include="Migrations\202302211648379_InitialCreate.cs" />
+    <Compile Include="Migrations\202302211648379_InitialCreate.designer.cs">
+      <DependentUpon>202302211648379_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,11 +140,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202302091512088_InitialCreate.resx">
-      <DependentUpon>202302091512088_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202302091632298_UpdateModel.resx">
-      <DependentUpon>202302091632298_UpdateModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202302211648379_InitialCreate.resx">
+      <DependentUpon>202302211648379_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

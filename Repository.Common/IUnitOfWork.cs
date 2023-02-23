@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,11 @@ namespace Repository.Common
 {
     public interface IUnitOfWork
     {
-        IVehicleMakeRepository VehicleMakeRepository { get; }
-        IVehicleModelRepository VehicleModelRepository { get; }
+        IGenericRepository<VehicleMakeEntity> VehicleMakeEntities { get; }
+        IGenericRepository<VehicleModelEntity> VehicleModelEntities { get; }
         void Commit();
         void Dispose();
-        int Save();
+       // int Save();
         Task CommitAsync();
     }
 }

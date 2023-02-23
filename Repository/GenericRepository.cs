@@ -107,7 +107,7 @@ namespace Repository
                 throw new Exception($"{nameof(entity)} could not be updated: {e.Message}");
             }
         }
-        public virtual async Task<int> DeleteAsync(T entity)
+        public virtual async Task DeleteAsync(T entity)
         {
             if (entity == null)
             {
@@ -116,7 +116,7 @@ namespace Repository
             try
             {
                 _dbSet.Remove(entity);
-               return await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch(Exception e)
             {

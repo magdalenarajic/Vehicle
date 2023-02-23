@@ -9,3 +9,4 @@ namespace DAL
         DbSet<VehicleMake> VehicleMakes { get; set; }
     }
 }
+

@@ -16,7 +16,7 @@ namespace Repository.Common
         Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> expression);
         Task<T> GetByIdAsync(int id);
         Task<T> AddAsync(T entity);
-        Task<int> DeleteAsync(T entity);
+        Task DeleteAsync(T entity);
         Task<T> UpdateAsync(T entity);
     }
 }

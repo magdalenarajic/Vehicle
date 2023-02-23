@@ -27,7 +27,7 @@ namespace WebAPI
                         .SerializerSettings
                         .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
-
+            config.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
 
         }
     }
