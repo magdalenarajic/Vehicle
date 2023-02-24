@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         // GET: api/VehicleModels
         [HttpGet]
         [Route("VehicleModels")]
-        public async Task<IEnumerable<IVehicleModel>> GetAll()
+        public async Task<List<IVehicleModel>> GetAll()
         {
             var vehicleModels = await _vehicleModelService.GetAllVehicleModelsAsync();
             return vehicleModels;
@@ -101,6 +101,21 @@ namespace WebAPI.Controllers
             }
 
             return StatusCode(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [Route("VehicleModelsOrderBy")]
+        public async Task<List<IVehicleModel>> GetVehicleModelsOrderByName()
+        {
+            var vehicleModels = await _vehicleModelService.GetVehicleModelsOrderByNameAsync();
+            return vehicleModels;
+        }
+        [HttpGet]
+        [Route("VehicleModelsFilterBy")]
+        public async Task<List<IVehicleModel>> GetVehicleModelsFilterByName(string name)
+        {
+            var vehicleModels = await _vehicleModelService.GetVehicleModelsFilterByNameAsync(name);
+            return vehicleModels;
         }
     }
 }

@@ -14,11 +14,13 @@ namespace Service
     {
         public IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IVehicleMakeRepository _vehicleMakeRepository;
 
-        public VehicleMakeService(IUnitOfWork unitOfWork, IMapper mapper)
+        public VehicleMakeService(IUnitOfWork unitOfWork, IMapper mapper, IVehicleMakeRepository vehicleMakeRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _vehicleMakeRepository = vehicleMakeRepository;
         }
 
         public async Task<IVehicleMake> GetVehicleMakeByIdAsync(int id)
@@ -36,7 +38,7 @@ namespace Service
             
         }
 
-        public async Task<IEnumerable<IVehicleMake>> GetAllVehicleMakesAsync()
+        public async Task<List<IVehicleMake>> GetAllVehicleMakesAsync()
         {
             
             var vehicleMakes = await _unitOfWork.VehicleMakeEntities.GetAllAsync();
@@ -82,6 +84,17 @@ namespace Service
                    return true;
                 }
                 return false;
+        }
+
+        public async Task<List<IVehicleMake>> GetVehicleMakesOrderByNameAsync()
+        {
+            var vehicleMakeEntities = await _vehicleMakeRepository.GetOrderByNameAsync();
+            return new List<IVehicleMake>(vehicleMakeEntities.ToList());
+        }
+        public async Task<List<IVehicleMake>> GetVehicleMakesFilterByNameAsync(string search)
+        {
+            var vehicleMakeEntities = await _vehicleMakeRepository.GetFilterByNameAsync(search);
+            return new List<IVehicleMake>(vehicleMakeEntities.ToList());
         }
     }
 }

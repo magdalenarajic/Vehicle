@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         // GET: api/VehicleMakes
         [HttpGet]
         [Route("VehicleMakes")]
-        public async Task<IEnumerable<IVehicleMake>> GetAll()
+        public async Task<List<IVehicleMake>> GetAll()
         {
             var vehicleMakes = await _vehicleMakeService.GetAllVehicleMakesAsync();
             return vehicleMakes;
@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
             return Ok(newVehicleMake);
         }
 
-        // DELETE: api/VehicleMakes/5
+        // DELETE: api/VehicleMakes/id
         [HttpDelete]
         [Route("VehicleMakes/{id}")]
         public async Task<IHttpActionResult> DeleteVehicleMake(int id)
@@ -103,6 +103,22 @@ namespace WebAPI.Controllers
 
             return StatusCode(HttpStatusCode.OK);
         }
+
+        [HttpGet]
+        [Route("VehicleMakesOrderBy")]
+        public async Task<List<IVehicleMake>> GetVehicleMakesOrderByName() 
+        {
+            var vehicleMakes = await _vehicleMakeService.GetVehicleMakesOrderByNameAsync();
+            return vehicleMakes;
+        }
+        [HttpGet]
+        [Route("VehicleMakesFilterBy")]
+        public async Task<List<IVehicleMake>> GetVehicleMakesFilterByName(string name)
+        {
+            var vehicleMakes = await _vehicleMakeService.GetVehicleMakesFilterByNameAsync(name);
+            return vehicleMakes;
+        }
+
 
     }
 }

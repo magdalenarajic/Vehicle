@@ -15,10 +15,12 @@ namespace Service
     {
         public IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public VehicleModelService(IUnitOfWork unitOfWork, IMapper mapper)
+        private IVehicleModelRepository _vehicleModelRepository;
+        public VehicleModelService(IUnitOfWork unitOfWork, IMapper mapper, IVehicleModelRepository vehicleModelRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _vehicleModelRepository = vehicleModelRepository;
         }
 
         public async Task<IVehicleModel> GetVehicleModelByIdAsync(int id)
@@ -34,11 +36,13 @@ namespace Service
             }
             return null;
         }
-        public async Task<IEnumerable<IVehicleModel>> GetAllVehicleModelsAsync()
+
+        public async Task<List<IVehicleModel>> GetAllVehicleModelsAsync()
         {
             var vehicleModels = await _unitOfWork.VehicleModelEntities.GetAllAsync();
             return _mapper.Map<List<IVehicleModel>>(vehicleModels).ToList();
         }
+
         public async Task<bool> CreateVehicleModelAsync(VehicleModelEntity vehicleModelEntity)
         {
             if (vehicleModelEntity != null)
@@ -67,6 +71,7 @@ namespace Service
             }
             return false;
         }
+
         public async Task<bool> DeleteVehicleModelAsync(int id)
         {
             var vehicleModel = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
@@ -77,6 +82,17 @@ namespace Service
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<IVehicleModel>> GetVehicleModelsOrderByNameAsync()
+        {
+            var vehicleModelEntities = await _vehicleModelRepository.GetOrderByNameAsync();
+            return new List<IVehicleModel>(vehicleModelEntities.ToList());
+        }
+        public async Task<List<IVehicleModel>> GetVehicleModelsFilterByNameAsync(string search)
+        {
+            var vehicleModelEntities = await _vehicleModelRepository.GetFilterByNameAsync(search);
+            return new List<IVehicleModel>(vehicleModelEntities.ToList());
         }
     }
 }
