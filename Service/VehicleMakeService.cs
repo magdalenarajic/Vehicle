@@ -1,11 +1,11 @@
-﻿using DAL.Entities;
+﻿using AutoMapper;
+using DAL.Entities;
 using Model;
+using Model.Common;
 using Repository.Common;
 using Service.Common;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Service
@@ -13,54 +13,58 @@ namespace Service
     public class VehicleMakeService : IVehicleMakeService
     {
         public IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public VehicleMakeService(IUnitOfWork unitOfWork)
+        public VehicleMakeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<VehicleMakeEntity> GetVehicleMakeByIdAsync(int id)
+        public async Task<IVehicleMake> GetVehicleMakeByIdAsync(int id)
         {
             if (id > 0)
             {
-                var makes = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
-                if (makes != null)
+                var vehicleMake = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
+                if (vehicleMake != null)
                 {
-                    return makes;
+                    var _vehicleMake = _mapper.Map<IVehicleMake>(vehicleMake);
+                    return _vehicleMake;
                 }
             }
             return null;
             
         }
 
-        public async Task<IEnumerable<VehicleMakeEntity>> GetAllVehicleMakesAsync()
+        public async Task<IEnumerable<IVehicleMake>> GetAllVehicleMakesAsync()
         {
             
-            var makes = await _unitOfWork.VehicleMakeEntities.GetAllAsync();
-            return makes;
+            var vehicleMakes = await _unitOfWork.VehicleMakeEntities.GetAllAsync();
+
+            return _mapper.Map<List<IVehicleMake>>(vehicleMakes).ToList();
         }
-        public async Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity entity)
+        public async Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity vehicleMakeEntity)
         {
-            if (entity != null)
+            if (vehicleMakeEntity != null)
             {
-                await _unitOfWork.VehicleMakeEntities.AddAsync(entity);
+                await _unitOfWork.VehicleMakeEntities.AddAsync(vehicleMakeEntity);
                 _unitOfWork.Commit();
                return true;
             }
             return false;
         }
 
-        public async Task<bool> UpdateVehicleMakeAsync(int id, VehicleMakeEntity entity)
+        public async Task<bool> UpdateVehicleMakeAsync(int id, VehicleMakeEntity vehicleMakeEntity)
         {
-            if (entity != null)
+            if (vehicleMakeEntity != null)
             {
-                var make = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
-                 if (make != null)
+                var vehicleMake = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
+                 if (vehicleMake != null)
                  {
-                     make.Name = entity.Name;
-                     make.Abrv = entity.Abrv;
+                     vehicleMake.Name = vehicleMakeEntity.Name;
+                     vehicleMake.Abrv = vehicleMakeEntity.Abrv;
 
-                     await _unitOfWork.VehicleMakeEntities.UpdateAsync(make);
+                     await _unitOfWork.VehicleMakeEntities.UpdateAsync(vehicleMake);
 
                     return true;
                  } 
@@ -70,10 +74,10 @@ namespace Service
 
         public async Task<bool> DeleteVehicleMakeAsync(int id)
         {
-                var make = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
-                if (make != null)
+                var vehicleMake = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
+                if (vehicleMake != null)
                 {
-                   await _unitOfWork.VehicleMakeEntities.DeleteAsync(make);
+                   await _unitOfWork.VehicleMakeEntities.DeleteAsync(vehicleMake);
                     _unitOfWork.Commit();
                    return true;
                 }

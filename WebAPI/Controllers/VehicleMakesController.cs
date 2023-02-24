@@ -3,7 +3,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using AutoMapper;
 using DAL.Entities;
+using Model;
+using Model.Common;
 using Service.Common;
 
 namespace WebAPI.Controllers
@@ -12,23 +15,26 @@ namespace WebAPI.Controllers
     public class VehicleMakesController : ApiController
     {
         private readonly IVehicleMakeService _vehicleMakeService;
+        private readonly IMapper _mapper;
 
-        public VehicleMakesController(IVehicleMakeService vehicleMakeService)
+        public VehicleMakesController(IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
             _vehicleMakeService = vehicleMakeService;
+            _mapper = mapper;
+
         }
 
         // GET: api/VehicleMakes
         [HttpGet]
         [Route("VehicleMakes")]
-        public async Task<IEnumerable<VehicleMakeEntity>> GetAll()
+        public async Task<IEnumerable<IVehicleMake>> GetAll()
         {
-            var VehicleMakes = await _vehicleMakeService.GetAllVehicleMakesAsync();
-            return VehicleMakes;
+            var vehicleMakes = await _vehicleMakeService.GetAllVehicleMakesAsync();
+            return vehicleMakes;
         }
 
         // GET: api/VehicleMakes/id
-        [ResponseType(typeof(VehicleMakeEntity))]
+        [ResponseType(typeof(IVehicleMake))]
         [Route("VehicleMakes/{id}")]
         public async Task<IHttpActionResult> GetVehicleMake(int id)
         {
@@ -45,7 +51,7 @@ namespace WebAPI.Controllers
         [HttpPut]
         [ResponseType(typeof(void))]
         [Route("VehicleMakes/{id}")]
-        public async Task<IHttpActionResult> PutVehicleMake(int id, VehicleMakeEntity vehicleMake)
+        public async Task<IHttpActionResult> PutVehicleMake(int id, VehicleMake vehicleMake)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +59,8 @@ namespace WebAPI.Controllers
             }
             try
             {
-                var updatedVehicleMake = await _vehicleMakeService.UpdateVehicleMakeAsync(id, vehicleMake);
+                var vehicleMakeEntity = _mapper.Map<VehicleMakeEntity>(vehicleMake);
+                var updatedVehicleMake = await _vehicleMakeService.UpdateVehicleMakeAsync(id, vehicleMakeEntity);
                 return Ok(updatedVehicleMake);
             }
             catch 
@@ -61,20 +68,21 @@ namespace WebAPI.Controllers
                 return StatusCode(HttpStatusCode.BadRequest);
             }
 
-            // return StatusCode(HttpStatusCode.NoContent);
+            
         }
 
         // POST: api/VehicleMakes
         [HttpPost]
         [ResponseType(typeof(VehicleMakeEntity))]
         [Route("VehicleMakes")]
-        public async Task<IHttpActionResult> PostVehicleMake(VehicleMakeEntity vehicleMake)
+        public async Task<IHttpActionResult> PostVehicleMake(VehicleMake vehicleMake)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var newVehicleMake = await _vehicleMakeService.CreateVehicleMakeAsync(vehicleMake);
+            var vehicleMakeEntity = _mapper.Map<VehicleMakeEntity>(vehicleMake);
+            var newVehicleMake = await _vehicleMakeService.CreateVehicleMakeAsync(vehicleMakeEntity);
             return Ok(newVehicleMake);
         }
 

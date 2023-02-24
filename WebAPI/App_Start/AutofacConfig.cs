@@ -27,13 +27,19 @@ namespace WebAPI.App_Start
             //Register your Web API controllers.  
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
-            builder.RegisterModule(new RepositoryModuleDI());
+
+            builder.RegisterAssemblyTypes(Assembly.Load("Repository"))
+                  .Where(t => t.Name.EndsWith("Repository"))
+                  .AsImplementedInterfaces()
+                 .InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(Assembly.Load("Service"))
                 .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
-            
+     
             builder.RegisterModule(new EFModuleDI());
+            builder.RegisterModule<AutoMapperModule>();
+
 
             //Set the dependency resolver to be Autofac.  
             Container = builder.Build();

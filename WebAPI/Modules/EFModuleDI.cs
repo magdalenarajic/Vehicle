@@ -14,7 +14,7 @@ namespace WebAPI.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterModule(new RepositoryModuleDI());
+        
             builder.RegisterType<VehicleContext>().AsSelf().As<DbContext>().InstancePerLifetimeScope();
             builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
 

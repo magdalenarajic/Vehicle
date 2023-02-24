@@ -9,7 +9,7 @@ namespace Model.Common
         string Name { get; set; }
         string Abrv { get; set; }
 
-        [ForeignKey("VehicleMake")]
+        [ForeignKey("IVehicleMake")]
         int MakeId { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using DAL.Entities;
+﻿using AutoMapper;
+using DAL.Entities;
+using Model.Common;
 using Repository.Common;
 using Service.Common;
 using System;
@@ -12,51 +14,53 @@ namespace Service
     public class VehicleModelService : IVehicleModelService
     {
         public IUnitOfWork _unitOfWork;
-
-        public VehicleModelService(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public VehicleModelService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<VehicleModelEntity> GetVehicleModelByIdAsync(int id)
+        public async Task<IVehicleModel> GetVehicleModelByIdAsync(int id)
         {
             if (id > 0)
             {
-                var model = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
-                if (model != null)
+                var vehicleModel = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
+                if (vehicleModel != null)
                 {
-                    return model;
+                    var _vehicleModel = _mapper.Map<IVehicleModel>(vehicleModel);
+                    return _vehicleModel;
                 }
             }
             return null;
         }
-        public async Task<IEnumerable<VehicleModelEntity>> GetAllVehicleModelsAsync()
+        public async Task<IEnumerable<IVehicleModel>> GetAllVehicleModelsAsync()
         {
-            var models = await _unitOfWork.VehicleModelEntities.GetAllAsync();
-            return models;
+            var vehicleModels = await _unitOfWork.VehicleModelEntities.GetAllAsync();
+            return _mapper.Map<List<IVehicleModel>>(vehicleModels).ToList();
         }
-        public async Task<bool> CreateVehicleModelAsync(VehicleModelEntity entity)
+        public async Task<bool> CreateVehicleModelAsync(VehicleModelEntity vehicleModelEntity)
         {
-            if (entity != null)
+            if (vehicleModelEntity != null)
             {
-                await _unitOfWork.VehicleModelEntities.AddAsync(entity);
+                await _unitOfWork.VehicleModelEntities.AddAsync(vehicleModelEntity);
                 _unitOfWork.Commit();
                 return true;
             }
             return false;
         }
 
-        public async Task<bool> UpdateVehicleModelAsync(int id, VehicleModelEntity entity)
+        public async Task<bool> UpdateVehicleModelAsync(int id, VehicleModelEntity vehicleModelEntity)
         {
-            if (entity != null)
+            if (vehicleModelEntity != null)
             {
-                var model = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
-                if (model != null)
+                var vehicleModel = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
+                if (vehicleModel != null)
                 {
-                    model.Name = entity.Name;
-                    model.Abrv = entity.Abrv;
+                    vehicleModel.Name = vehicleModelEntity.Name;
+                    vehicleModel.Abrv = vehicleModelEntity.Abrv;
 
-                    await _unitOfWork.VehicleModelEntities.UpdateAsync(model);
+                    await _unitOfWork.VehicleModelEntities.UpdateAsync(vehicleModel);
 
                     return true;
                 }
@@ -65,10 +69,10 @@ namespace Service
         }
         public async Task<bool> DeleteVehicleModelAsync(int id)
         {
-            var model = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
-            if (model != null)
+            var vehicleModel = await _unitOfWork.VehicleModelEntities.GetByIdAsync(id);
+            if (vehicleModel != null)
             {
-                await _unitOfWork.VehicleModelEntities.DeleteAsync(model);
+                await _unitOfWork.VehicleModelEntities.DeleteAsync(vehicleModel);
                 _unitOfWork.Commit();
                 return true;
             }

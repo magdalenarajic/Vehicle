@@ -1,4 +1,7 @@
-﻿using DAL.Entities;
+﻿using AutoMapper;
+using DAL.Entities;
+using Model;
+using Model.Common;
 using Service.Common;
 using System;
 using System.Collections.Generic;
@@ -15,18 +18,19 @@ namespace WebAPI.Controllers
     public class VehicleModelsController : ApiController
     {
         private readonly IVehicleModelService _vehicleModelService;
-
-        public VehicleModelsController(IVehicleModelService vehicleModelService)
+        private readonly IMapper _mapper;
+        public VehicleModelsController(IVehicleModelService vehicleModelService, IMapper mapper)
         {
             _vehicleModelService = vehicleModelService;
+            _mapper = mapper;
         }
         // GET: api/VehicleModels
         [HttpGet]
         [Route("VehicleModels")]
-        public async Task<IEnumerable<VehicleModelEntity>> GetAll()
+        public async Task<IEnumerable<IVehicleModel>> GetAll()
         {
-            var VehicleModels = await _vehicleModelService.GetAllVehicleModelsAsync();
-            return VehicleModels;
+            var vehicleModels = await _vehicleModelService.GetAllVehicleModelsAsync();
+            return vehicleModels;
         }
 
         // GET: api/VehicleModels/id
@@ -48,15 +52,16 @@ namespace WebAPI.Controllers
         [HttpPut]
         [ResponseType(typeof(void))]
         [Route("VehicleModels/{id}")]
-        public async Task<IHttpActionResult> PutVehicleModel(int id, VehicleModelEntity vehicleModel)
+        public async Task<IHttpActionResult> PutVehicleModel(int id, VehicleModel vehicleModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             try
-            {
-                var updatedVehicleModel = await _vehicleModelService.UpdateVehicleModelAsync(id, vehicleModel);
+            { 
+                var vehicleModelEntity = _mapper.Map<VehicleModelEntity>(vehicleModel);
+                var updatedVehicleModel = await _vehicleModelService.UpdateVehicleModelAsync(id, vehicleModelEntity);
                 return Ok(updatedVehicleModel);
             }
             catch
@@ -69,13 +74,14 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ResponseType(typeof(VehicleModelEntity))]
         [Route("VehicleModels")]
-        public async Task<IHttpActionResult> PostVehicleModel(VehicleModelEntity vehicleModel)
+        public async Task<IHttpActionResult> PostVehicleModel(VehicleModel vehicleModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var newVehicleModel = await _vehicleModelService.CreateVehicleModelAsync(vehicleModel);
+            var vehicleModelEntity = _mapper.Map<VehicleModelEntity>(vehicleModel);
+            var newVehicleModel = await _vehicleModelService.CreateVehicleModelAsync(vehicleModelEntity);
             return Ok(newVehicleModel);
         }
 

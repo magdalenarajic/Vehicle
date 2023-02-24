@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using Model;
+using Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Service.Common
 {
     public interface IVehicleMakeService
     {
-        Task<VehicleMakeEntity> GetVehicleMakeByIdAsync(int id);
-        Task<IEnumerable<VehicleMakeEntity>> GetAllVehicleMakesAsync();
-        Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity entity);
+        Task<IVehicleMake> GetVehicleMakeByIdAsync(int id);
+        Task<IEnumerable<IVehicleMake>> GetAllVehicleMakesAsync();
+        Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity vehicleMake);
 
         Task<bool> UpdateVehicleMakeAsync(int id, VehicleMakeEntity vehicleMake);
 
