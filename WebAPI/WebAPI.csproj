@@ -253,7 +253,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValueController.cs" />
     <Compile Include="Controllers\VehicleMakesController.cs" />
     <Compile Include="Controllers\VehicleModelsController.cs" />
     <Compile Include="Global.asax.cs">

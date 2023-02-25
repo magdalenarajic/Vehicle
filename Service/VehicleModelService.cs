@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common;
 using DAL.Entities;
 using Model.Common;
 using Repository.Common;
@@ -93,6 +94,12 @@ namespace Service
         {
             var vehicleModelEntities = await _vehicleModelRepository.GetFilterByNameAsync(search);
             return new List<IVehicleModel>(vehicleModelEntities.ToList());
+        }
+
+        public async Task<PagedList<VehicleModelEntity>> GetPagedVehicleModelsAsync(QueryParameters queryParameters)
+        {
+            var pagedVehicleModels = await _vehicleModelRepository.GetPaged(queryParameters);
+            return pagedVehicleModels;
         }
     }
 }

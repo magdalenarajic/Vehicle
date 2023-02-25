@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Common;
 using DAL.Entities;
 using Model;
 using Model.Common;
+using Newtonsoft.Json;
 using Service.Common;
 using System;
 using System.Collections.Generic;
@@ -47,6 +49,24 @@ namespace WebAPI.Controllers
             return Ok(vehicleModel);
         }
 
+
+        [HttpGet]
+        [Route("PagedVehicleModels")]
+        public async Task<IHttpActionResult> GetPagedVehicleModels([FromUri] QueryParameters queryParameters)
+        {
+            var vehicleModels = await _vehicleModelService.GetPagedVehicleModelsAsync(queryParameters);
+            var metadata = new
+            {
+                vehicleModels.TotalCount,
+                vehicleModels.PageSize,
+                vehicleModels.CurrentPage,
+                vehicleModels.TotalPages,
+                vehicleModels.HasNext,
+                vehicleModels.HasPrevious
+            };
+            System.Web.HttpContext.Current.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(vehicleModels);
+        }
 
         // PUT: api/VehicleModels/id
         [HttpPut]

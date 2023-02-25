@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AutoMapper;
+using Common;
 using DAL.Entities;
 using Model;
 using Model.Common;
+using Newtonsoft.Json;
 using Service.Common;
 
 namespace WebAPI.Controllers
@@ -47,6 +49,23 @@ namespace WebAPI.Controllers
             return Ok(vehicleMake);
         }
 
+        [HttpGet]
+        [Route("PagedVehicleMakes")]
+        public async Task<IHttpActionResult> GetPagedVehicleMakes([FromUri] QueryParameters queryParameters)
+        {
+            var vehicleMakes = await _vehicleMakeService.GetPagedVehicleMakesAsync(queryParameters);
+            var metadata = new
+            {
+                vehicleMakes.TotalCount,
+                vehicleMakes.PageSize,
+                vehicleMakes.CurrentPage,
+                vehicleMakes.TotalPages,
+                vehicleMakes.HasNext,
+                vehicleMakes.HasPrevious
+            };
+            System.Web.HttpContext.Current.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(vehicleMakes);
+        }
         // PUT: api/VehicleMakes/id
         [HttpPut]
         [ResponseType(typeof(void))]
@@ -105,14 +124,14 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("VehicleMakesOrderBy")]
+        [Route("OrderedVehicleMakes")]
         public async Task<List<IVehicleMake>> GetVehicleMakesOrderByName() 
         {
             var vehicleMakes = await _vehicleMakeService.GetVehicleMakesOrderByNameAsync();
             return vehicleMakes;
         }
         [HttpGet]
-        [Route("VehicleMakesFilterBy")]
+        [Route("FilteredVehicleMakes")]
         public async Task<List<IVehicleMake>> GetVehicleMakesFilterByName(string name)
         {
             var vehicleMakes = await _vehicleMakeService.GetVehicleMakesFilterByNameAsync(name);

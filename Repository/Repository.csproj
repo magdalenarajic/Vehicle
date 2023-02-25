@@ -128,6 +128,10 @@
     <Compile Include="VehicleModelRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{5E585FA1-B7AE-40D5-A361-4DFCC110C1A6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{0E783BD7-DD9D-4E11-948F-66002EFB6E56}</Project>
       <Name>DAL</Name>

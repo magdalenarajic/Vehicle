@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using Common;
+using DAL.Entities;
 using Model.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace Service.Common
     {
         Task<IVehicleModel> GetVehicleModelByIdAsync(int id);
         Task<List<IVehicleModel>> GetAllVehicleModelsAsync();
+
+        Task<PagedList<VehicleModelEntity>> GetPagedVehicleModelsAsync(QueryParameters queryParameters);
         Task<bool> CreateVehicleModelAsync(VehicleModelEntity entity);
         Task<bool> UpdateVehicleModelAsync(int id, VehicleModelEntity vehicleModel);
         Task<bool> DeleteVehicleModelAsync(int id);

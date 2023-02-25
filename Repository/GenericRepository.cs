@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using Common;
+using DAL;
 using Repository.Common;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Repository
         {
             try
             {
-                return _dbSet.AsEnumerable();
+                return _dbSet.ToList();
             }
             catch (Exception e)
             {
@@ -45,6 +46,7 @@ namespace Repository
                 throw new Exception($"Couldn't retrieve entities: {e.Message}");
             }
         }
+
         public virtual async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> expression)
         {
             try

@@ -1,4 +1,6 @@
-﻿using Model;
+﻿using Common;
+using DAL.Entities;
+using Model;
 using Model.Common;
 using System;
 using System.Collections.Generic;
@@ -12,5 +14,7 @@ namespace Repository.Common
     {
         Task<List<IVehicleModel>> GetOrderByNameAsync();
         Task<List<IVehicleModel>> GetFilterByNameAsync(string search = null);
+
+        Task<PagedList<VehicleModelEntity>> GetPaged(QueryParameters queryParameters);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Common;
 using DAL;
+using DAL.Entities;
 using Model;
 using Model.Common;
 using Repository.Common;
@@ -36,6 +38,13 @@ namespace Repository
             }
             var vehicleModelEntities = await query.ToListAsync();
             return _mapper.Map<List<IVehicleModel>>(vehicleModelEntities).ToList();
+        }
+
+        public async Task<PagedList<VehicleModelEntity>> GetPaged(QueryParameters queryParameters)
+        {
+            var vehicleModelEntities = _context.VehicleModels.OrderBy(e => e.Id);
+            var pagedList = await PagedList<VehicleModelEntity>.ToPagedList(vehicleModelEntities, queryParameters.PageNumber, queryParameters.PageSize);
+            return pagedList;
         }
     }
 }

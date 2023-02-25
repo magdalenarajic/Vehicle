@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common;
 using DAL.Entities;
 using Model;
 using Model.Common;
@@ -45,6 +46,7 @@ namespace Service
 
             return _mapper.Map<List<IVehicleMake>>(vehicleMakes).ToList();
         }
+
         public async Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity vehicleMakeEntity)
         {
             if (vehicleMakeEntity != null)
@@ -88,13 +90,20 @@ namespace Service
 
         public async Task<List<IVehicleMake>> GetVehicleMakesOrderByNameAsync()
         {
-            var vehicleMakeEntities = await _vehicleMakeRepository.GetOrderByNameAsync();
-            return new List<IVehicleMake>(vehicleMakeEntities.ToList());
+            var vehicleMakes = await _vehicleMakeRepository.GetOrderByNameAsync();
+            return new List<IVehicleMake>(vehicleMakes.ToList());
         }
         public async Task<List<IVehicleMake>> GetVehicleMakesFilterByNameAsync(string search)
         {
             var vehicleMakeEntities = await _vehicleMakeRepository.GetFilterByNameAsync(search);
             return new List<IVehicleMake>(vehicleMakeEntities.ToList());
         }
+
+        public async Task<PagedList<VehicleMakeEntity>> GetPagedVehicleMakesAsync(QueryParameters queryParameters)
+        {
+            var pagedVehicleMakes = await _vehicleMakeRepository.GetPaged(queryParameters);
+            return pagedVehicleMakes;
+        }
+
     }
 }
