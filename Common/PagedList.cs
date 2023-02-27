@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common
 {
@@ -13,6 +10,7 @@ namespace Common
         public int TotalPages { get; private set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
+
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
         public PagedList(List<T> items, int count, int pageNumber, int pageSize)
@@ -23,10 +21,10 @@ namespace Common
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             AddRange(items);
         }
-        public static async Task<PagedList<T>> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+        public static PagedList<T> ToPagedList(IEnumerable<T> source, int count, int pageNumber, int pageSize)
         {
-            var count = source.Count();
-            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var items = source.ToList();
+            // var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }

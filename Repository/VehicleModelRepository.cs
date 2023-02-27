@@ -40,10 +40,17 @@ namespace Repository
             return _mapper.Map<List<IVehicleModel>>(vehicleModelEntities).ToList();
         }
 
-        public async Task<PagedList<VehicleModelEntity>> GetPaged(QueryParameters queryParameters)
+        public async Task<PagedList<IVehicleModel>> GetPagedList(QueryParameters queryParameters)
         {
-            var vehicleModelEntities = _context.VehicleModels.OrderBy(e => e.Id);
-            var pagedList = await PagedList<VehicleModelEntity>.ToPagedList(vehicleModelEntities, queryParameters.PageNumber, queryParameters.PageSize);
+            var vehicleModelEntities = await _context.VehicleModels.OrderBy(e => e.Name).ToListAsync();
+            var count = vehicleModelEntities.Count();
+
+            var pageList = _mapper.Map<List<IVehicleModel>>(vehicleModelEntities)
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize);
+
+            var pagedList = PagedList<IVehicleModel>.ToPagedList(pageList, count, queryParameters.PageNumber, queryParameters.PageSize);
+
             return pagedList;
         }
     }

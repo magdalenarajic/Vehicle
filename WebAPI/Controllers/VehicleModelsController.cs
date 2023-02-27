@@ -1,18 +1,14 @@
-﻿using AutoMapper;
-using Common;
-using DAL.Entities;
-using Model;
-using Model.Common;
-using Newtonsoft.Json;
-using Service.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using AutoMapper;
+using Common;
+using Model.Common;
+using Newtonsoft.Json;
+using Service.Common;
+using WebAPI.RESTModels;
 
 namespace WebAPI.Controllers
 {
@@ -21,22 +17,32 @@ namespace WebAPI.Controllers
     {
         private readonly IVehicleModelService _vehicleModelService;
         private readonly IMapper _mapper;
+
         public VehicleModelsController(IVehicleModelService vehicleModelService, IMapper mapper)
         {
             _vehicleModelService = vehicleModelService;
             _mapper = mapper;
-        }
-        // GET: api/VehicleModels
-        [HttpGet]
-        [Route("VehicleModels")]
-        public async Task<List<IVehicleModel>> GetAll()
-        {
-            var vehicleModels = await _vehicleModelService.GetAllVehicleModelsAsync();
-            return vehicleModels;
+
         }
 
+
+        // GET: api/VehicleModels
+        [HttpGet]
+        [ResponseType(typeof(VehicleModelRest))]
+        [Route("VehicleModels")]
+        public async Task<IHttpActionResult> GetAll()
+        {
+            var vehicleModels = await _vehicleModelService.GetAllVehicleModelsAsync();
+            if (vehicleModels == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<VehicleModelRest>>(vehicleModels));
+        }
+
+
         // GET: api/VehicleModels/id
-        [ResponseType(typeof(VehicleModelEntity))]
+        [ResponseType(typeof(VehicleModelRest))]
         [Route("VehicleModels/{id}")]
         public async Task<IHttpActionResult> GetVehicleModel(int id)
         {
@@ -46,7 +52,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(vehicleModel);
+            return Ok(_mapper.Map<VehicleModelRest>(vehicleModel));
         }
 
 
@@ -65,23 +71,19 @@ namespace WebAPI.Controllers
                 vehicleModels.HasPrevious
             };
             System.Web.HttpContext.Current.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-            return Ok(vehicleModels);
+            return Ok(_mapper.Map<List<VehicleModelRest>>(vehicleModels));
         }
+
 
         // PUT: api/VehicleModels/id
         [HttpPut]
-        [ResponseType(typeof(void))]
         [Route("VehicleModels/{id}")]
-        public async Task<IHttpActionResult> PutVehicleModel(int id, VehicleModel vehicleModel)
+        public async Task<IHttpActionResult> PutVehicleModel(int id, VehicleModelRest vehicleModelRest)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             try
-            { 
-                var vehicleModelEntity = _mapper.Map<VehicleModelEntity>(vehicleModel);
-                var updatedVehicleModel = await _vehicleModelService.UpdateVehicleModelAsync(id, vehicleModelEntity);
+            {
+                var vehicleModel = _mapper.Map<IVehicleModel>(vehicleModelRest);
+                var updatedVehicleModel = await _vehicleModelService.UpdateVehicleModelAsync(id, vehicleModel);
                 return Ok(updatedVehicleModel);
             }
             catch
@@ -90,22 +92,31 @@ namespace WebAPI.Controllers
             }
         }
 
+
         // POST: api/VehicleModels
         [HttpPost]
-        [ResponseType(typeof(VehicleModelEntity))]
+        [ResponseType(typeof(VehicleModelRest))]
         [Route("VehicleModels")]
-        public async Task<IHttpActionResult> PostVehicleModel(VehicleModel vehicleModel)
+        public async Task<IHttpActionResult> PostVehicleModel(VehicleModelRest vehicleModelRest)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var vehicleModelEntity = _mapper.Map<VehicleModelEntity>(vehicleModel);
-            var newVehicleModel = await _vehicleModelService.CreateVehicleModelAsync(vehicleModelEntity);
-            return Ok(newVehicleModel);
+            try
+            {
+                var vehicleModel = _mapper.Map<IVehicleModel>(vehicleModelRest);
+                var newVehicleModel = await _vehicleModelService.CreateVehicleModelAsync(vehicleModel);
+                return Ok(newVehicleModel);
+            }
+            catch
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
         }
 
-        // DELETE: api/VehicleModels/5
+
+        // DELETE: api/VehicleModels/id
         [HttpDelete]
         [Route("VehicleModels/{id}")]
         public async Task<IHttpActionResult> DeleteVehicleModel(int id)
@@ -123,19 +134,34 @@ namespace WebAPI.Controllers
             return StatusCode(HttpStatusCode.OK);
         }
 
+
         [HttpGet]
-        [Route("VehicleModelsOrderBy")]
-        public async Task<List<IVehicleModel>> GetVehicleModelsOrderByName()
+        [ResponseType(typeof(VehicleModelRest))]
+        [Route("OrderedVehicleModels")]
+        public async Task<IHttpActionResult> GetVehicleModelsOrderByName()
         {
             var vehicleModels = await _vehicleModelService.GetVehicleModelsOrderByNameAsync();
-            return vehicleModels;
+            if (vehicleModels == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<VehicleModelRest>>(vehicleModels));
         }
+
+
         [HttpGet]
-        [Route("VehicleModelsFilterBy")]
-        public async Task<List<IVehicleModel>> GetVehicleModelsFilterByName(string name)
+        [ResponseType(typeof(VehicleModelRest))]
+        [Route("FilteredVehicleModels")]
+        public async Task<IHttpActionResult> GetVehicleModelsFilterByName(string name)
         {
             var vehicleModels = await _vehicleModelService.GetVehicleModelsFilterByNameAsync(name);
-            return vehicleModels;
+            if (vehicleModels == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<VehicleModelRest>>(vehicleModels));
         }
+
+
     }
 }

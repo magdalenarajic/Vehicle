@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Common;
 using DAL.Entities;
-using Model;
 using Model.Common;
 using Repository.Common;
 using Service.Common;
@@ -47,10 +46,11 @@ namespace Service
             return _mapper.Map<List<IVehicleMake>>(vehicleMakes).ToList();
         }
 
-        public async Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity vehicleMakeEntity)
+        public async Task<bool> CreateVehicleMakeAsync(IVehicleMake vehicleMake)
         {
-            if (vehicleMakeEntity != null)
+            if (vehicleMake != null)
             {
+                var vehicleMakeEntity = _mapper.Map<VehicleMakeEntity>(vehicleMake);
                 await _unitOfWork.VehicleMakeEntities.AddAsync(vehicleMakeEntity);
                 _unitOfWork.Commit();
                return true;
@@ -58,20 +58,22 @@ namespace Service
             return false;
         }
 
-        public async Task<bool> UpdateVehicleMakeAsync(int id, VehicleMakeEntity vehicleMakeEntity)
+        public async Task<bool> UpdateVehicleMakeAsync(int id, IVehicleMake vehicleMake)
         {
-            if (vehicleMakeEntity != null)
+            if (vehicleMake != null)
             {
-                var vehicleMake = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
-                 if (vehicleMake != null)
-                 {
-                     vehicleMake.Name = vehicleMakeEntity.Name;
-                     vehicleMake.Abrv = vehicleMakeEntity.Abrv;
+                var newVehicleMake = _mapper.Map<VehicleMakeEntity>(vehicleMake);
+                var oldVehicleMake = await _unitOfWork.VehicleMakeEntities.GetByIdAsync(id);
+                if (oldVehicleMake != null)
+                {
+                     oldVehicleMake.Name = newVehicleMake.Name;
+                     oldVehicleMake.Abrv = newVehicleMake.Abrv;
 
-                     await _unitOfWork.VehicleMakeEntities.UpdateAsync(vehicleMake);
+                     await _unitOfWork.VehicleMakeEntities.UpdateAsync(oldVehicleMake);
 
                     return true;
-                 } 
+                }
+                return false;
             }
             return false;
         }
@@ -95,13 +97,14 @@ namespace Service
         }
         public async Task<List<IVehicleMake>> GetVehicleMakesFilterByNameAsync(string search)
         {
-            var vehicleMakeEntities = await _vehicleMakeRepository.GetFilterByNameAsync(search);
-            return new List<IVehicleMake>(vehicleMakeEntities.ToList());
+            var vehicleMakes = await _vehicleMakeRepository.GetFilterByNameAsync(search);
+            return new List<IVehicleMake>(vehicleMakes.ToList());
         }
 
-        public async Task<PagedList<VehicleMakeEntity>> GetPagedVehicleMakesAsync(QueryParameters queryParameters)
+        public async Task<PagedList<IVehicleMake>> GetPagedVehicleMakesAsync(QueryParameters queryParameters)
         {
-            var pagedVehicleMakes = await _vehicleMakeRepository.GetPaged(queryParameters);
+
+            PagedList<IVehicleMake> pagedVehicleMakes = await _vehicleMakeRepository.GetPagedList(queryParameters);
             return pagedVehicleMakes;
         }
 

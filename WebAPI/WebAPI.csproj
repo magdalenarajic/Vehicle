@@ -259,9 +259,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Modules\AutoMapperModule.cs" />
-    <Compile Include="Modules\AutoMapperProfile.cs" />
+    <Compile Include="Profiles\AutoMapperProfile.cs" />
     <Compile Include="Modules\EFModuleDI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RESTModels\VehicleMakeRest.cs" />
+    <Compile Include="RESTModels\VehicleModelRest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

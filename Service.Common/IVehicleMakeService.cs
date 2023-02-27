@@ -15,9 +15,9 @@ namespace Service.Common
         Task<IVehicleMake> GetVehicleMakeByIdAsync(int id);
         Task<List<IVehicleMake>> GetAllVehicleMakesAsync();
 
-        Task<PagedList<VehicleMakeEntity>> GetPagedVehicleMakesAsync(QueryParameters queryParameters);
-        Task<bool> CreateVehicleMakeAsync(VehicleMakeEntity vehicleMake);
-        Task<bool> UpdateVehicleMakeAsync(int id, VehicleMakeEntity vehicleMake);
+        Task<PagedList<IVehicleMake>> GetPagedVehicleMakesAsync(QueryParameters queryParameters);
+        Task<bool> CreateVehicleMakeAsync(IVehicleMake vehicleMake);
+        Task<bool> UpdateVehicleMakeAsync(int id, IVehicleMake vehicleMake);
         Task<bool> DeleteVehicleMakeAsync(int id);
         Task<List<IVehicleMake>> GetVehicleMakesOrderByNameAsync();
         Task<List<IVehicleMake>> GetVehicleMakesFilterByNameAsync(string search = null);

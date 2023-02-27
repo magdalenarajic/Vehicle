@@ -11,9 +11,9 @@ namespace Service.Common
         Task<IVehicleModel> GetVehicleModelByIdAsync(int id);
         Task<List<IVehicleModel>> GetAllVehicleModelsAsync();
 
-        Task<PagedList<VehicleModelEntity>> GetPagedVehicleModelsAsync(QueryParameters queryParameters);
-        Task<bool> CreateVehicleModelAsync(VehicleModelEntity entity);
-        Task<bool> UpdateVehicleModelAsync(int id, VehicleModelEntity vehicleModel);
+        Task<PagedList<IVehicleModel>> GetPagedVehicleModelsAsync(QueryParameters queryParameters);
+        Task<bool> CreateVehicleModelAsync(IVehicleModel vehicleModel);
+        Task<bool> UpdateVehicleModelAsync(int id, IVehicleModel vehicleModel);
         Task<bool> DeleteVehicleModelAsync(int id);
         Task<List<IVehicleModel>> GetVehicleModelsOrderByNameAsync();
         Task<List<IVehicleModel>> GetVehicleModelsFilterByNameAsync(string search = null);

@@ -5,11 +5,10 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AutoMapper;
 using Common;
-using DAL.Entities;
-using Model;
 using Model.Common;
 using Newtonsoft.Json;
 using Service.Common;
+using WebAPI.RESTModels;
 
 namespace WebAPI.Controllers
 {
@@ -28,15 +27,21 @@ namespace WebAPI.Controllers
 
         // GET: api/VehicleMakes
         [HttpGet]
+        [ResponseType(typeof(VehicleMakeRest))]
         [Route("VehicleMakes")]
-        public async Task<List<IVehicleMake>> GetAll()
+
+        public async Task<IHttpActionResult> GetAll()
         {
             var vehicleMakes = await _vehicleMakeService.GetAllVehicleMakesAsync();
-            return vehicleMakes;
+            if (vehicleMakes == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<VehicleMakeRest>>(vehicleMakes));
         }
 
         // GET: api/VehicleMakes/id
-        [ResponseType(typeof(IVehicleMake))]
+        [ResponseType(typeof(VehicleMakeRest))]
         [Route("VehicleMakes/{id}")]
         public async Task<IHttpActionResult> GetVehicleMake(int id)
         {
@@ -46,7 +51,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(vehicleMake);
+            return Ok(_mapper.Map<VehicleMakeRest>(vehicleMake));
         }
 
         [HttpGet]
@@ -64,13 +69,30 @@ namespace WebAPI.Controllers
                 vehicleMakes.HasPrevious
             };
             System.Web.HttpContext.Current.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-            return Ok(vehicleMakes);
+            return Ok(_mapper.Map<List<VehicleMakeRest>>(vehicleMakes));
         }
+        
         // PUT: api/VehicleMakes/id
         [HttpPut]
-        [ResponseType(typeof(void))]
         [Route("VehicleMakes/{id}")]
-        public async Task<IHttpActionResult> PutVehicleMake(int id, VehicleMake vehicleMake)
+        public async Task<IHttpActionResult> PutVehicleMake(int id, VehicleMakeRest vehicleMakeRest)
+        {
+            try
+            {
+                var vehicleMake = _mapper.Map<IVehicleMake>(vehicleMakeRest);
+                var updatedVehicleMake = await _vehicleMakeService.UpdateVehicleMakeAsync(id, vehicleMake);
+                return Ok(updatedVehicleMake);
+            }
+            catch 
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // POST: api/VehicleMakes
+        [HttpPost]
+        [Route("VehicleMakes")]
+        public async Task<IHttpActionResult> PostVehicleMake(VehicleMakeRest vehicleMakeRest)
         {
             if (!ModelState.IsValid)
             {
@@ -78,31 +100,14 @@ namespace WebAPI.Controllers
             }
             try
             {
-                var vehicleMakeEntity = _mapper.Map<VehicleMakeEntity>(vehicleMake);
-                var updatedVehicleMake = await _vehicleMakeService.UpdateVehicleMakeAsync(id, vehicleMakeEntity);
-                return Ok(updatedVehicleMake);
+                var vehicleMake = _mapper.Map<IVehicleMake>(vehicleMakeRest);
+                var newVehicleMake = await _vehicleMakeService.CreateVehicleMakeAsync(vehicleMake);
+                return Ok(newVehicleMake);
             }
-            catch 
+            catch
             {
                 return StatusCode(HttpStatusCode.BadRequest);
             }
-
-            
-        }
-
-        // POST: api/VehicleMakes
-        [HttpPost]
-        [ResponseType(typeof(VehicleMakeEntity))]
-        [Route("VehicleMakes")]
-        public async Task<IHttpActionResult> PostVehicleMake(VehicleMake vehicleMake)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var vehicleMakeEntity = _mapper.Map<VehicleMakeEntity>(vehicleMake);
-            var newVehicleMake = await _vehicleMakeService.CreateVehicleMakeAsync(vehicleMakeEntity);
-            return Ok(newVehicleMake);
         }
 
         // DELETE: api/VehicleMakes/id
@@ -124,18 +129,28 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [ResponseType(typeof(VehicleMakeRest))]
         [Route("OrderedVehicleMakes")]
-        public async Task<List<IVehicleMake>> GetVehicleMakesOrderByName() 
+        public async Task<IHttpActionResult> GetVehicleMakesOrderByName() 
         {
             var vehicleMakes = await _vehicleMakeService.GetVehicleMakesOrderByNameAsync();
-            return vehicleMakes;
+            if (vehicleMakes == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<VehicleMakeRest>>(vehicleMakes));
         }
         [HttpGet]
+        [ResponseType(typeof(VehicleMakeRest))]
         [Route("FilteredVehicleMakes")]
-        public async Task<List<IVehicleMake>> GetVehicleMakesFilterByName(string name)
+        public async Task<IHttpActionResult> GetVehicleMakesFilterByName(string name)
         {
             var vehicleMakes = await _vehicleMakeService.GetVehicleMakesFilterByNameAsync(name);
-            return vehicleMakes;
+            if (vehicleMakes == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<VehicleMakeRest>>(vehicleMakes));
         }
 
 

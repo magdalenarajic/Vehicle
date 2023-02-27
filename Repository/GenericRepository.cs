@@ -1,5 +1,4 @@
-﻿using Common;
-using DAL;
+﻿using DAL;
 using Repository.Common;
 using System;
 using System.Collections.Generic;

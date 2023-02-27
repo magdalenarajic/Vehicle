@@ -2,10 +2,7 @@
 using DAL.Entities;
 using Model;
 using Model.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using WebAPI.RESTModels;
 
 namespace WebAPI.Modules
 {
@@ -16,10 +13,14 @@ namespace WebAPI.Modules
             CreateMap<VehicleMakeEntity, VehicleMake>().ReverseMap();
             CreateMap<VehicleMakeEntity, IVehicleMake>().ReverseMap();
             CreateMap<IVehicleMake, VehicleMake>().ReverseMap();
+            CreateMap<VehicleMakeRest, VehicleMake>().ReverseMap();
+            CreateMap<VehicleMakeRest, IVehicleMake>().ReverseMap();
 
             CreateMap<VehicleModelEntity, VehicleModel>().ReverseMap();
             CreateMap<VehicleModelEntity, IVehicleModel>().ReverseMap();
             CreateMap<IVehicleModel, VehicleModel>().ReverseMap();
+            CreateMap<VehicleModelRest, VehicleModel>().ReverseMap();
+            CreateMap<VehicleModelRest, IVehicleModel>().ReverseMap();
 
         }
     }
