@@ -30,7 +30,6 @@ namespace WebAPI
 
             config.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
 
-            config.EnableCors(new EnableCorsAttribute("http://localhost:3000","*","*"));
 
         }
     }

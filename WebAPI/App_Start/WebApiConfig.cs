@@ -6,6 +6,7 @@ using System.Data.Entity;
 using Service.Common;
 using Service;
 using Repository.Common;
+using System.Web.Http.Cors;
 
 namespace WebAPI
 {
@@ -14,15 +15,17 @@ namespace WebAPI
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-           
+            config.EnableCors(new EnableCorsAttribute("http://localhost:3000","*","*"));
+
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
             name: "DefaultApi",
             routeTemplate: "api/{controller}/{id}",
-            defaults: new { id = RouteParameter.Optional }
-        );
+            defaults: new { id = RouteParameter.Optional });
+
             
         }
 
