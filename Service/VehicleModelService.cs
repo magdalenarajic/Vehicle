@@ -64,6 +64,7 @@ namespace Service
                 {
                     oldVehicleModel.Name = newVehicleModel.Name;
                     oldVehicleModel.Abrv = newVehicleModel.Abrv;
+                    oldVehicleModel.MakeId = newVehicleModel.MakeId;
 
                     await _unitOfWork.VehicleModelEntities.UpdateAsync(oldVehicleModel);
 

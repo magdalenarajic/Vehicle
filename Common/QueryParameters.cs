@@ -24,7 +24,8 @@ namespace Common
             }
         }
 
-        /* public string Name { get; set; }
-        public bool ValidName => String.IsNullOrWhiteSpace(Name); */
+        public string Name { get; set; } 
+
+        public string Order { get; set; } = "id";
     }
 }
